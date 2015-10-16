@@ -1,5 +1,6 @@
 /*
  * Defs.h
+ * Fichero de definiciones
  *
  *  Created on: 9 de oct. de 2015
  *      Author: cristina

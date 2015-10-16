@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*Estructura que representa cada entrada de la tabla de símbolos*/
 typedef struct entrada {
 	struct entrada* anterior;
 	int id;
@@ -15,7 +16,6 @@ entradaTabla* tablaSimbolos;
 int NUEVA_ENTRADA (int id, int linea) {
 	int indice;
 
-	/*Devolver dónde estaba o dónde se ha metido*/
 
 	return indice;
 }
@@ -23,7 +23,7 @@ int NUEVA_ENTRADA (int id, int linea) {
 int BORRAR_ENTRADA (int id) {
 	int exito;
 
-	/*Devuelve 0 si falla, y 1 si se borra*/
+
 
 	return exito;
 }
@@ -31,7 +31,6 @@ int BORRAR_ENTRADA (int id) {
 int BUSCAR_ENTRADA (int id) {
 	int exito;
 
-	/*Devuelve 0 si encuentra coincidencias y 1 si las encuentra*/
 
 	return exito;
 }
