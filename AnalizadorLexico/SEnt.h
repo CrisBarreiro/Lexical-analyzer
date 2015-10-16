@@ -8,6 +8,12 @@
 #ifndef SENT_H_
 #define SENT_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+
+/*Abre el archivo*/
+FILE* ABRIR(char* ruta);
+
 /*Devuelve el siguiente caracter del fichero a leer*/
 char SIG_CHAR();
 

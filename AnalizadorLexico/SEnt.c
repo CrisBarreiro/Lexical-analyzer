@@ -1,11 +1,12 @@
 /*Sistema de entrada*/
 
+#include "SEnt.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <SEnt.h>
+
 
 char SIG_CHAR() {
-	char sigChar;
+	char sigChar = " ";
 
 	return sigChar;
 };
@@ -15,7 +16,9 @@ void RETROCEDER() {
 }
 
 FILE* ABRIR(char* ruta) {
-	FILE* file;
+	FILE *file;
+
+	file = fopen(ruta, "rt");
 
 	return file;
 }
