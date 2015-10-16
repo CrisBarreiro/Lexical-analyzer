@@ -4,10 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+FILE* file;
 
 char SIG_CHAR() {
-	char sigChar = " ";
-
+	char sigChar;
+	sigChar = fgetc(file);
+	printf ("%c", sigChar);
 	return sigChar;
 };
 
@@ -16,7 +18,6 @@ void RETROCEDER() {
 }
 
 FILE* ABRIR(char* ruta) {
-	FILE *file;
 
 	file = fopen(ruta, "rt");
 

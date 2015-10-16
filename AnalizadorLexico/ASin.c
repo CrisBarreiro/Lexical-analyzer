@@ -8,7 +8,7 @@
 
 /*Función que pide un componente léxico al analizador léxico*/
 void PEDIR_COMP_LEX() {
-
+	SIG_COMP_LEX();
 }
 
 int main () {
@@ -17,6 +17,8 @@ int main () {
 	if (!file) {
 		ERROR (0, 0);
 	}
+
+	PEDIR_COMP_LEX();
 
 	return 0;
 }
