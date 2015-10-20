@@ -9,6 +9,6 @@
 #ifndef DEFS_H_
 #define DEFS_H_
 
-
+#define MULTILINE_STRING 300
 
 #endif /* DEFS_H_ */
