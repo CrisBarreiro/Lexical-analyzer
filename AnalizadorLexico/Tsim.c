@@ -2,39 +2,59 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "uthash.h"
+#include "Defs.h"
 
-/*Estructura que representa cada entrada de la tabla de símbolos*/
-typedef struct entrada {
-	struct entrada* anterior;
+typedef struct {
 	int id;
-	int* linea;
-	struct entrada* siguiente;
-}entradaTabla;
+	char* lexema;
+	UT_hash_handle hh;
+} entry;
 
-entradaTabla* tablaSimbolos;
+entry *tabla = NULL;
 
-int NUEVA_ENTRADA (int id, int linea) {
-	int indice;
-
-
-	return indice;
+entry * BUSCAR_ENTRADA(char *lex) {
+	entry *s;
+	HASH_FIND_STR(tabla, lex, s);
+	return s;
 }
 
-int BORRAR_ENTRADA (int id) {
-	int exito;
-
-
-
-	return exito;
+//función privada de manejo de la tabla
+void ANHADIR(int id, char *lexema) {
+	entry *s = NULL;
+	s = (entry*) malloc (sizeof(entry));
+	s->lexema = (char*) malloc((strlen(lexema) + 1) * sizeof(char));
+	strcpy(s->lexema, lexema);
+	s->id = id;
+	HASH_ADD_KEYPTR(hh, tabla, s->lexema, strlen(s->lexema), s);
 }
 
-int BUSCAR_ENTRADA (int id) {
-	int exito;
-
-
-	return exito;
+int NUEVA_ENTRADA(char *lexema) {
+	entry *s = BUSCAR_ENTRADA(lexema);
+	if (s == NULL) {
+		ANHADIR(IDENTIFIER, lexema);
+		return IDENTIFIER;
+	} else {
+		return s->id;
+	}
 }
 
-void CREAR_TABLA () {
+int BORRAR_ENTRADA(int id) {
+	int flag = 0;
+
+	return flag;
+}
+
+void CREAR_TABLA() {
+	ANHADIR(IMPORT, "import");
+	ANHADIR(AS, "as");
+	ANHADIR(DEF, "def");
+	ANHADIR(FOR, "for");
+	ANHADIR(IN, "in");
+	ANHADIR(IF, "if");
+	ANHADIR(ELIF, "elif");
+	ANHADIR(ELSE, "else");
+	ANHADIR(NOT, "not");
+	ANHADIR(PRINT, "print");
 
 }

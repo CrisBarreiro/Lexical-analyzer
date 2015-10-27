@@ -1,6 +1,8 @@
 #ifndef ALEX_H_
 #define ALEX_H_
 
+#include "uthash.h"
+
 typedef struct {
 	int id;
 	char* lexema;

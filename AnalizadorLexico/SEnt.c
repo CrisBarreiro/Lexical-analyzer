@@ -9,12 +9,11 @@ FILE* file;
 char SIG_CHAR() {
 	char sigChar;
 	sigChar = fgetc(file);
-	printf ("%c", sigChar);
 	return sigChar;
 };
 
 void RETROCEDER() {
-	/*seek(fp, -1, SEEK_CUR);*/
+	fseek(file, -1, SEEK_CUR);
 }
 
 FILE* ABRIR(char* ruta) {
