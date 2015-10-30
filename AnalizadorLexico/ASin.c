@@ -14,19 +14,29 @@
 void PEDIR_COMP_LEX() {
 	componenteLexico comp;
 	int i;
-	for (i = 0; i < cosas; i++) {
+	while (*(comp.lexema) != EOF) {
 		comp = SIG_COMP_LEX();
+                //imprime un espacio de más por motivos desconocidos
 		printf("%d\t#%s#\n", comp.id, comp.lexema);
 	}
 }
 
 int main() {
-
+	char k;
+	int i = 0;
 	FILE *file = ABRIR(ruta);
 	if (!file) {
 		ERROR(0, 0);
 	}
-
+        INICIALIZAR();
+//	 while (k != EOF) {
+//	 k = SIG_CHAR();
+//	 fflush(stdout);
+//	 printf("%c", k);
+//	 if (i % 20 == 0)
+//	 DEVOLVER_COMPONENTE();
+//	 i++;
+//	 }
 	CREAR_TABLA();
 
 	PEDIR_COMP_LEX();
