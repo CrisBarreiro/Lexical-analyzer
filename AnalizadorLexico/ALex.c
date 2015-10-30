@@ -91,7 +91,9 @@ void INT() {
     } while (isdigit(sig));
     if (sig == '.') {
         FL();
-    } else {
+    } else if (sig == 'e') {
+        EXP();
+    }else {
         RETROCEDER();
         sigComp.lexema = (char*) malloc(numChar * sizeof (char));
         strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
@@ -124,11 +126,24 @@ void HEX() {
         INT();
     } else if (sig == '.') {
         FL();
+    } else if (sig == 'e') {
+        EXP();
     }
 }
 
 void EXP() {
-
+    sig = SIG_CHAR();
+    numChar++;
+    if (sig == '-' || isdigit(sig)) {
+        do {
+            sig = SIG_CHAR();
+            numChar++;
+        } while (isdigit(sig));
+        RETROCEDER();
+        sigComp.lexema = (char*) malloc(numChar * sizeof (char));
+        strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
+        sigComp.id = EXPONENTIAL;
+    }
 }
 
 void NUM() {
