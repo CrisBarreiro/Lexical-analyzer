@@ -22,6 +22,9 @@
 
 #define IDENTIFIER 350
 #define MULTILINE_STRING 351
-#define IDENTIFICADOR 352
+#define INTEGER 352
+#define FLOAT 353
+#define HEXADECIMAL 354
+#define EXPONENTIAL 355
 
 #endif /* DEFS_H_ */

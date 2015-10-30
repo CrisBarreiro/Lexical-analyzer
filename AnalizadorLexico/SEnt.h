@@ -14,10 +14,19 @@
 /*Abre el archivo*/
 FILE* ABRIR(char* ruta);
 
+/*Carga el primer buffer*/
+void INICIALIZAR();
+
 /*Devuelve el siguiente caracter del fichero a leer*/
 char SIG_CHAR();
 
-/*Mueve el cursor del fichero una posición hacia atrás*/
+/*Mueve delantero una posición hacia atrás*/
 void RETROCEDER();
+
+/*Retrocede hasta el inicio del componente léxico*/
+void RETROCEDER_TODO();
+
+/*Devuelve un componente léxico*/
+char* DEVOLVER_COMPONENTE();
 
 #endif /* SENT_H_ */
