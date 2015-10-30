@@ -74,7 +74,14 @@ void ALPHANUM() {
 }
 
 void FL() {
-
+    do {
+        sig = SIG_CHAR();
+        numChar++;
+    } while (isdigit(sig));
+    RETROCEDER();
+    sigComp.lexema = (char*) malloc(numChar * sizeof (char));
+    strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
+    sigComp.id = FLOAT;
 }
 
 void INT() {
@@ -103,6 +110,7 @@ int A_F() {
 
 void HEX() {
     sig = SIG_CHAR();
+    numChar++;
     if (sig == 'x') {
         do {
             sig = SIG_CHAR();
@@ -113,9 +121,9 @@ void HEX() {
         strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
         sigComp.id = HEXADECIMAL;
     } else if (isdigit(sig)) {
-        INT;
+        INT();
     } else if (sig == '.') {
-        FL;
+        FL();
     }
 }
 
@@ -148,6 +156,7 @@ void SYM() {
 
 componenteLexico SIG_COMP_LEX() {
     int control = 0;
+    char anterior;
     while (control == 0) {
         numChar = 0;
         sig = SIG_CHAR();
@@ -168,6 +177,16 @@ componenteLexico SIG_COMP_LEX() {
             ALPHANUM();
             return sigComp;
         } else if (ispunct(sig)) {
+            if (sig == '.') {
+                sig = SIG_CHAR();
+                if (isdigit(sig)) {
+                    RETROCEDER_TODO();
+                    sig = SIG_CHAR();
+                    numChar++;
+                    NUM();
+                    return sigComp;
+                }
+            }
             sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
             SYM();
             return sigComp;
