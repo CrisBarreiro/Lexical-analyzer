@@ -26,5 +26,6 @@
 #define FLOAT 353
 #define HEXADECIMAL 354
 #define EXPONENTIAL 355
+#define STRING 356
 
 #endif /* DEFS_H_ */

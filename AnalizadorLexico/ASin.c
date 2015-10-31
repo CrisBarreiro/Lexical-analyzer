@@ -8,7 +8,6 @@
 #include "Tsim.h"
 
 #define ruta "entrada/codigo.py"
-#define cosas 30
 
 /*Función que pide un componente léxico al analizador léxico*/
 void PEDIR_COMP_LEX() {

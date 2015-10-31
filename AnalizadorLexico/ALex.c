@@ -23,20 +23,34 @@ void DESCARTAR_COMENTARIOS() {
     }
     printf("%c", sig);
     RETROCEDER();
+    numChar--;
 }
 
-int STRING_MULTILINEA() {
+void STR() {
+    char primero, anterior;
+    sig = SIG_CHAR();
+    primero = sig;
+    if (primero == '"' || primero == '\'') {
+        do {
+            anterior = sig;
+            sig = SIG_CHAR();
+            numChar++;
+        } while (sig != primero && (anterior != '\'' || anterior != '\\'));
+        sigComp.id = STRING;
+        sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
+        strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
+    }
+}
+
+void STRING_MULTILINEA() {
     char anterior;
     int number = 0;
-    int i = 0;
-    int retorno = 0;
     sig = SIG_CHAR();
     numChar++;
     if (sig == '\"') {
         sig = SIG_CHAR();
         numChar++;
         if (sig == '\"') {
-            i = 3;
             while (number < 3) {
                 anterior = sig;
                 sig = SIG_CHAR();
@@ -49,17 +63,22 @@ int STRING_MULTILINEA() {
                         number = 1;
                     }
                 }
-                i++;
             }
             if (number == 3) {
                 sigComp.id = MULTILINE_STRING;
                 sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
                 strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
-                retorno = 1;
             }
+        } else {
+            RETROCEDER_TODO();
+            numChar = 0;
+            STR();
         }
+    } else {
+        RETROCEDER_TODO();
+        numChar = 0;
+        STR();
     }
-    return retorno;
 }
 
 void ALPHANUM() {
@@ -84,6 +103,21 @@ void FL() {
     sigComp.id = FLOAT;
 }
 
+void EXP() {
+    sig = SIG_CHAR();
+    numChar++;
+    if (sig == '-' || isdigit(sig)) {
+        do {
+            sig = SIG_CHAR();
+            numChar++;
+        } while (isdigit(sig));
+        RETROCEDER();
+        sigComp.lexema = (char*) malloc(numChar * sizeof (char));
+        strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
+        sigComp.id = EXPONENTIAL;
+    }
+}
+
 void INT() {
     do {
         sig = SIG_CHAR();
@@ -93,7 +127,7 @@ void INT() {
         FL();
     } else if (sig == 'e') {
         EXP();
-    }else {
+    } else {
         RETROCEDER();
         sigComp.lexema = (char*) malloc(numChar * sizeof (char));
         strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
@@ -128,21 +162,12 @@ void HEX() {
         FL();
     } else if (sig == 'e') {
         EXP();
-    }
-}
-
-void EXP() {
-    sig = SIG_CHAR();
-    numChar++;
-    if (sig == '-' || isdigit(sig)) {
-        do {
-            sig = SIG_CHAR();
-            numChar++;
-        } while (isdigit(sig));
+    } else {
         RETROCEDER();
+        numChar--;
         sigComp.lexema = (char*) malloc(numChar * sizeof (char));
         strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
-        sigComp.id = EXPONENTIAL;
+        sigComp.id = INTEGER;
     }
 }
 
@@ -171,7 +196,6 @@ void SYM() {
 
 componenteLexico SIG_COMP_LEX() {
     int control = 0;
-    char anterior;
     while (control == 0) {
         numChar = 0;
         sig = SIG_CHAR();
@@ -179,10 +203,13 @@ componenteLexico SIG_COMP_LEX() {
         if (sig == '#') {
             DESCARTAR_COMENTARIOS();
         } else if (sig == '\"') {
-            if (STRING_MULTILINEA() == 1) {
-                return sigComp;
-            }
-        } else if (sig == '\n') {
+            STRING_MULTILINEA();
+            return sigComp;
+        } else if (sig == '\''){
+            RETROCEDER();
+            STR();
+            return sigComp;
+        }else if (sig == '\n') {
             SYM();
             return sigComp;
         } else if (isdigit(sig)) {
@@ -196,10 +223,14 @@ componenteLexico SIG_COMP_LEX() {
                 sig = SIG_CHAR();
                 if (isdigit(sig)) {
                     RETROCEDER_TODO();
+                    numChar = 0;
                     sig = SIG_CHAR();
                     numChar++;
                     NUM();
                     return sigComp;
+                } else {
+                    RETROCEDER();
+                    numChar--;
                 }
             }
             sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
