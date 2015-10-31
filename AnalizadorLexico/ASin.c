@@ -41,6 +41,8 @@ int main() {
 	CREAR_TABLA();
 
 	PEDIR_COMP_LEX();
+        
+        IMPRIMIR();
 
 	return 0;
 }

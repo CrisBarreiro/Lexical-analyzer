@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "uthash.h"
 #include "Defs.h"
+#include "ALex.h"
 
 typedef struct {
 	int id;
@@ -43,6 +44,20 @@ int BORRAR_ENTRADA(int id) {
 	int flag = 0;
 
 	return flag;
+}
+
+void IMPRIMIR() {
+    entry *s, *tmp;
+    componenteLexico cl;
+    int i;
+    printf("--------------------Tabla de símbolos--------------------\n");
+    printf("%-8s\t%-20s%-20s\n", "Indice", "Lexema", "Tipo");
+    printf("---------------------------------------------------------\n");
+    HASH_ITER(hh, tabla, s, tmp) {
+        printf("\n%10d\t%-20s%-20d", i, s->lexema, s->id);
+	i++;
+    }
+    
 }
 
 void CREAR_TABLA() {

@@ -197,7 +197,10 @@ componenteLexico SIG_COMP_LEX() {
         SIGUIENTE();
         if (sig == '#') {
             DESCARTAR_COMENTARIOS();
-        } else if (sig == '\"') {
+        } else if (sig == EOF) {
+            SYM();
+            return sigComp;
+        }else if (sig == '\"') {
             STRING_MULTILINEA();
             return sigComp;
         } else if (sig == '\'') {
@@ -213,8 +216,8 @@ componenteLexico SIG_COMP_LEX() {
                 return sigComp;
             } else {
                 RETROCEDER();
-                SIGUIENTE();
                 SYM();
+                return sigComp;
             }
         } else if (sig == '=') {
             SIGUIENTE();
@@ -225,8 +228,8 @@ componenteLexico SIG_COMP_LEX() {
                 return sigComp;
             } else {
                 RETROCEDER();
-                SIGUIENTE();
                 SYM();
+                return sigComp;
             }
         } else if (sig == '+') {
             SIGUIENTE();
@@ -242,8 +245,8 @@ componenteLexico SIG_COMP_LEX() {
                 return sigComp;
             } else {
                 RETROCEDER();
-                SIGUIENTE();
                 SYM();
+                return sigComp;
             }
         } else if (sig == '\n') {
             SYM();

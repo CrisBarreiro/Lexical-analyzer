@@ -27,5 +27,10 @@
 #define HEXADECIMAL 354
 #define EXPONENTIAL 355
 #define STRING 356
+#define INDENTATION 357
+#define POWER 358
+#define PLUSPLUS 959
+#define MORE_EQUALS 360
+#define EQUALS 361
 
 #endif /* DEFS_H_ */

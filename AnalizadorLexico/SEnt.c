@@ -159,7 +159,7 @@ char* DEVOLVER_COMPONENTE() {
             ret[i] = *tmp;
             tmp++;
         }
-        ret[i + 1] = '\0';
+        ret[i] = '\0';
     } else {
         ret = (char*) malloc((BUFFERSIZE - 1) * sizeof (char));
         for (i = 0; tmp != (delantero); i++) {

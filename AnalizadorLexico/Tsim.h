@@ -12,4 +12,6 @@ int BORRAR_ENTRADA (int id);
 
 void CREAR_TABLA();
 
+void IMPRIMIR();
+
 #endif
