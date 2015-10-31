@@ -196,6 +196,7 @@ void SYM() {
 
 componenteLexico SIG_COMP_LEX() {
     int control = 0;
+    char anterior;
     while (control == 0) {
         numChar = 0;
         sig = SIG_CHAR();
@@ -209,7 +210,42 @@ componenteLexico SIG_COMP_LEX() {
             RETROCEDER();
             STR();
             return sigComp;
-        }else if (sig == '\n') {
+        } else if (sig == '*') {
+            sig = SIG_CHAR();
+            numChar++;
+            if (sig == '*') {
+                sigComp.lexema = (char*) malloc ((numChar+1) * sizeof(char));
+                strcpy (sigComp.lexema, DEVOLVER_COMPONENTE());
+                sigComp.id = POWER;
+                return sigComp;
+            } else {
+                RETROCEDER();
+                sig = SIG_CHAR();
+                numChar++;
+                SYM();
+            }
+        } else if (sig == '+') {
+            sig = SIG_CHAR();
+            if (sig == '+') {
+                sigComp.lexema = (char*) malloc ((numChar+1) * sizeof(char));
+                strcpy (sigComp.lexema, DEVOLVER_COMPONENTE());
+                sigComp.id = PLUSPLUS;
+                return sigComp;
+            } else if (sig == '='){
+                sigComp.lexema = (char*) malloc ((numChar+1) * sizeof(char));
+                strcpy (sigComp.lexema, DEVOLVER_COMPONENTE());
+                sigComp.id = MORE_EQUALS;
+                return sigComp;
+            } else {
+                RETROCEDER();
+                sig = SIG_CHAR();
+                numChar++;
+                SYM();
+            } 
+        }
+        else if (sig == '\n') {
+            /*TODO: contar espacios después de un \n, indentación*/
+            anterior = sig;
             SYM();
             return sigComp;
         } else if (isdigit(sig)) {
@@ -233,11 +269,22 @@ componenteLexico SIG_COMP_LEX() {
                     numChar--;
                 }
             }
-            sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
             SYM();
             return sigComp;
         } else if (sig == ' ') {
-            SYM();
+            if (anterior == '\n') {
+                do {
+                    sig = SIG_CHAR();
+                    numChar++;
+                } while (sig == ' ');
+                anterior = '0'; /*Ponemos un valor cualquiera en anterior*/
+                RETROCEDER();
+                sigComp.lexema = (char*) malloc (numChar * sizeof(char));
+                strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
+                sigComp.id = INDENTATION;
+            } else {
+                SYM();
+            }
             return sigComp;
         }
     }
