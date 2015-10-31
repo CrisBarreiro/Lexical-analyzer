@@ -9,32 +9,40 @@
 #include "Tsim.h"
 #include <string.h>
 
-char sig;
+char sig = '0';
+char anterior;
 componenteLexico sigComp;
 int numChar; //número de caracteres leídos
 
-void DESCARTAR_COMENTARIOS() {
-    char sig;
+void SIGUIENTE() {
+    anterior = sig;
     sig = SIG_CHAR();
     numChar++;
+}
+
+void DESCARTAR_COMENTARIOS() {
+    sig = SIG_CHAR();
     while (sig != '\n') {
         sig = SIG_CHAR();
-        numChar++;
     }
-    printf("%c", sig);
     RETROCEDER();
-    numChar--;
+}
+
+void DESCARTAR_ESPACIOS() {
+    sig = SIG_CHAR();
+    while(sig == ' ') {
+        sig = SIG_CHAR();
+    }
+    RETROCEDER();
 }
 
 void STR() {
-    char primero, anterior;
-    sig = SIG_CHAR();
+    char primero;
+    SIGUIENTE();
     primero = sig;
     if (primero == '"' || primero == '\'') {
         do {
-            anterior = sig;
-            sig = SIG_CHAR();
-            numChar++;
+            SIGUIENTE();
         } while (sig != primero && (anterior != '\'' || anterior != '\\'));
         sigComp.id = STRING;
         sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
@@ -43,18 +51,13 @@ void STR() {
 }
 
 void STRING_MULTILINEA() {
-    char anterior;
     int number = 0;
-    sig = SIG_CHAR();
-    numChar++;
+    SIGUIENTE();
     if (sig == '\"') {
-        sig = SIG_CHAR();
-        numChar++;
+        SIGUIENTE();
         if (sig == '\"') {
             while (number < 3) {
-                anterior = sig;
-                sig = SIG_CHAR();
-                numChar++;
+                SIGUIENTE();
                 if (sig != '\"' && sig != EOF) {
                 } else if (sig == '\"') {
                     if (anterior == sig) {
@@ -83,8 +86,7 @@ void STRING_MULTILINEA() {
 
 void ALPHANUM() {
     do {
-        sig = SIG_CHAR();
-        numChar++;
+        SIGUIENTE();
     } while (isalpha(sig) || isdigit(sig) || sig == '_');
     RETROCEDER();
     sigComp.lexema = (char*) malloc((numChar) * sizeof (char));
@@ -94,8 +96,7 @@ void ALPHANUM() {
 
 void FL() {
     do {
-        sig = SIG_CHAR();
-        numChar++;
+        SIGUIENTE();
     } while (isdigit(sig));
     RETROCEDER();
     sigComp.lexema = (char*) malloc(numChar * sizeof (char));
@@ -104,12 +105,10 @@ void FL() {
 }
 
 void EXP() {
-    sig = SIG_CHAR();
-    numChar++;
+    SIGUIENTE();
     if (sig == '-' || isdigit(sig)) {
         do {
-            sig = SIG_CHAR();
-            numChar++;
+            SIGUIENTE();
         } while (isdigit(sig));
         RETROCEDER();
         sigComp.lexema = (char*) malloc(numChar * sizeof (char));
@@ -120,8 +119,7 @@ void EXP() {
 
 void INT() {
     do {
-        sig = SIG_CHAR();
-        numChar++;
+        SIGUIENTE();
     } while (isdigit(sig));
     if (sig == '.') {
         FL();
@@ -145,12 +143,10 @@ int A_F() {
 }
 
 void HEX() {
-    sig = SIG_CHAR();
-    numChar++;
+    SIGUIENTE();
     if (sig == 'x') {
         do {
-            sig = SIG_CHAR();
-            numChar++;
+            SIGUIENTE();
         } while (isdigit(sig) || A_F());
         RETROCEDER();
         sigComp.lexema = (char*) malloc(numChar * sizeof (char));
@@ -196,56 +192,60 @@ void SYM() {
 
 componenteLexico SIG_COMP_LEX() {
     int control = 0;
-    char anterior;
     while (control == 0) {
         numChar = 0;
-        sig = SIG_CHAR();
-        numChar++;
+        SIGUIENTE();
         if (sig == '#') {
             DESCARTAR_COMENTARIOS();
         } else if (sig == '\"') {
             STRING_MULTILINEA();
             return sigComp;
-        } else if (sig == '\''){
+        } else if (sig == '\'') {
             RETROCEDER();
             STR();
             return sigComp;
         } else if (sig == '*') {
-            sig = SIG_CHAR();
-            numChar++;
+            SIGUIENTE();
             if (sig == '*') {
-                sigComp.lexema = (char*) malloc ((numChar+1) * sizeof(char));
-                strcpy (sigComp.lexema, DEVOLVER_COMPONENTE());
+                sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
+                strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
                 sigComp.id = POWER;
                 return sigComp;
             } else {
                 RETROCEDER();
-                sig = SIG_CHAR();
-                numChar++;
+                SIGUIENTE();
+                SYM();
+            }
+        } else if (sig == '=') {
+            SIGUIENTE();
+            if (sig == '=') {
+                sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
+                strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
+                sigComp.id = EQUALS;
+                return sigComp;
+            } else {
+                RETROCEDER();
+                SIGUIENTE();
                 SYM();
             }
         } else if (sig == '+') {
-            sig = SIG_CHAR();
+            SIGUIENTE();
             if (sig == '+') {
-                sigComp.lexema = (char*) malloc ((numChar+1) * sizeof(char));
-                strcpy (sigComp.lexema, DEVOLVER_COMPONENTE());
+                sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
+                strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
                 sigComp.id = PLUSPLUS;
                 return sigComp;
-            } else if (sig == '='){
-                sigComp.lexema = (char*) malloc ((numChar+1) * sizeof(char));
-                strcpy (sigComp.lexema, DEVOLVER_COMPONENTE());
+            } else if (sig == '=') {
+                sigComp.lexema = (char*) malloc((numChar + 1) * sizeof (char));
+                strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
                 sigComp.id = MORE_EQUALS;
                 return sigComp;
             } else {
                 RETROCEDER();
-                sig = SIG_CHAR();
-                numChar++;
+                SIGUIENTE();
                 SYM();
-            } 
-        }
-        else if (sig == '\n') {
-            /*TODO: contar espacios después de un \n, indentación*/
-            anterior = sig;
+            }
+        } else if (sig == '\n') {
             SYM();
             return sigComp;
         } else if (isdigit(sig)) {
@@ -256,12 +256,11 @@ componenteLexico SIG_COMP_LEX() {
             return sigComp;
         } else if (ispunct(sig)) {
             if (sig == '.') {
-                sig = SIG_CHAR();
+                SIGUIENTE();
                 if (isdigit(sig)) {
                     RETROCEDER_TODO();
                     numChar = 0;
-                    sig = SIG_CHAR();
-                    numChar++;
+                    SIGUIENTE();
                     NUM();
                     return sigComp;
                 } else {
@@ -274,18 +273,16 @@ componenteLexico SIG_COMP_LEX() {
         } else if (sig == ' ') {
             if (anterior == '\n') {
                 do {
-                    sig = SIG_CHAR();
-                    numChar++;
+                    SIGUIENTE();
                 } while (sig == ' ');
-                anterior = '0'; /*Ponemos un valor cualquiera en anterior*/
                 RETROCEDER();
-                sigComp.lexema = (char*) malloc (numChar * sizeof(char));
+                sigComp.lexema = (char*) malloc(numChar * sizeof (char));
                 strcpy(sigComp.lexema, DEVOLVER_COMPONENTE());
                 sigComp.id = INDENTATION;
+                return sigComp;
             } else {
-                SYM();
+                DESCARTAR_ESPACIOS();
             }
-            return sigComp;
         }
     }
 

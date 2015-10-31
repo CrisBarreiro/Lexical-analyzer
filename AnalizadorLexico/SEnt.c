@@ -162,19 +162,23 @@ char* DEVOLVER_COMPONENTE() {
         ret[i + 1] = '\0';
     } else {
         ret = (char*) malloc((BUFFERSIZE - 1) * sizeof (char));
-        for (i = 0; tmp != (delantero + 1); i++) {
+        for (i = 0; tmp != (delantero); i++) {
             if (*tmp != EOF) {
                 ret[i] = *tmp;
+                tmp++;
             } else if (BUFFER_INICIO() == 1) {
                 tmp = buffer2;
-                ret[i] = *tmp;
+                /*Decrementamos i para poder insertar el primer elemento del 
+                 * buffer en la posición que corresponde en la siguiente 
+                 * iteración*/
+                i --;
             } else {
                 tmp = buffer1;
-                ret[i] = *tmp;
+                i--;
             }
-            tmp++;
-            ret[i + 1] = '\0';
+            
         }
+        ret[i + 1] = '\0';
     }
 
     flag = 1;

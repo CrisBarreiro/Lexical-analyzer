@@ -12,12 +12,14 @@
 /*Función que pide un componente léxico al analizador léxico*/
 void PEDIR_COMP_LEX() {
 	componenteLexico comp;
-	int i;
-	while (*(comp.lexema) != EOF) {
+        int i = 0;
+	do {
 		comp = SIG_COMP_LEX();
                 //imprime un espacio de más por motivos desconocidos
-		printf("%d\t#%s#\n", comp.id, comp.lexema);
-	}
+                i++;
+                fflush(stdout);
+		printf("%d\t%d\t#%s#\n", i, comp.id, comp.lexema);
+	}while (*(comp.lexema) != EOF);
 }
 
 int main() {
