@@ -11,4 +11,10 @@
 /*Imprime por pantalla un error*/
 void ERROR(int id, int linea);
 
+/*Tipos de error*/
+#define NOT_FOUND 0
+#define TOO_LONG 1
+#define NOT_RECOGNIZED 2
+#define STRING_NOT_CLOSED 3
+
 #endif /* ERROR_H_ */

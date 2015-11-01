@@ -6,12 +6,10 @@
  */
 int NUEVA_ENTRADA (char *lexema);
 
-/*Borra una entrada de la tabla de símbolos.
- * Devuelve 0 si falla, y 1 si se borra*/
-int BORRAR_ENTRADA (int id);
-
+/*Crea la tabla de símbolos con las palabras reservadas del lenguaje*/
 void CREAR_TABLA();
 
+/*Imprime el contenido de la tabla de símbolos*/
 void IMPRIMIR();
 
 #endif

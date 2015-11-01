@@ -32,5 +32,7 @@
 #define PLUSPLUS 959
 #define MORE_EQUALS 360
 #define EQUALS 361
+#define MINUSMINUS 362
+#define MINUS_EQUALS 363
 
 #endif /* DEFS_H_ */

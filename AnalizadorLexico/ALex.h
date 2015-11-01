@@ -11,5 +11,8 @@ typedef struct {
 /*Devuelve un componente léxico*/
 componenteLexico SIG_COMP_LEX();
 
+/*Devuelve el número de línea actual*/
+int LINEA();
+
 #endif
 

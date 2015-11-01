@@ -29,4 +29,6 @@ void RETROCEDER_TODO();
 /*Devuelve un componente léxico*/
 char* DEVOLVER_COMPONENTE();
 
+/*Cierra el fichero*/
+int CERRAR();
 #endif /* SENT_H_ */
