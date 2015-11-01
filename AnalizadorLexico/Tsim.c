@@ -55,13 +55,13 @@ int NUEVA_ENTRADA(char *lexema) {
 /*Función que imprime el contenido de la tabla de símbolos*/
 void IMPRIMIR() {
     entry *s, *tmp;
-    int i;
+    int i = 0;
     printf("--------------------Tabla de símbolos--------------------\n");
     printf("%-8s\t%-20s%-20s\n", "Indice", "Lexema", "Tipo");
     printf("---------------------------------------------------------\n");
 
     HASH_ITER(hh, tabla, s, tmp) {
-        printf("\n%10d\t%-20s%-20d", i, s->lexema, s->id);
+        printf("\n%10d\t%-20s%-20s", i, s->lexema, IDTOSTRING(s->id));
         i++;
     }
 }
@@ -79,4 +79,5 @@ void CREAR_TABLA() {
     ANHADIR(ELSE, "else");
     ANHADIR(NOT, "not");
     ANHADIR(PRINT, "print");
+    ANHADIR(RETURN, "return");
 }

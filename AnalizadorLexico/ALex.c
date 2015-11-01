@@ -397,7 +397,7 @@ componenteLexico SIG_COMP_LEX() {
             return sigComp;
             /*Si el primer caracter es un espacio*/
         } else if (sig == ' ') {
-            /*S ecomprueba si el caracter anterior es un salto de línea*/
+            /*Se comprueba si el caracter anterior es un salto de línea*/
             if (anterior == '\n') {
                 /*En caso afirmativo se piden componentes hasta encontrar algo
                  distinto de un espacio.*/

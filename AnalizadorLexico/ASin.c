@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "Defs.h"
 #include "ALex.h"
 #include "SEnt.h"
 #include "Error.h"
@@ -19,7 +20,7 @@ void PEDIR_COMP_LEX() {
         comp = SIG_COMP_LEX();
         i++;
         fflush(stdout);
-        printf("%d\t%d\t#%s#\n", i, comp.id, comp.lexema);
+        printf("%d\t%-20s\t#%s#\n", i, IDTOSTRING(comp.id), comp.lexema);
     } while (*(comp.lexema) != EOF);
     printf("\n\n\n----------Fin del reconocimiento de componentes----------\n\n\n");
 }
