@@ -20,5 +20,8 @@ void ERROR(int id, int linea) {
         case STRING_NOT_CLOSED:
             printf("\nError: String no cerrado. Línea: %d\n", linea);
             break;
+        case MALFORMED_HEXADECIMAL:
+            printf("\nError: Hexadecimal mal formado. Línea: %d\n", linea);
+            break;
     }
 }

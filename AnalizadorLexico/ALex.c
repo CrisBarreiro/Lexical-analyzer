@@ -136,17 +136,6 @@ void ALPHANUM() {
     sigComp.id = NUEVA_ENTRADA(sigComp.lexema);
 }
 
-/*Función que reconoce números en punto flotante. Siempre se llama después de
- haber leído un punto o una secuencia de números terminada en punto. Se
- conservan los caracteres pertenecientes al número leídos antes del punto.*/
-void FL() {
-    do {
-        SIGUIENTE();
-    } while (isdigit(sig));
-    RETROCEDER();
-    CONSTRUIR(FLOAT);
-}
-
 /*Función que reconoce números en notación científica. Siempre se llama después
  de haber leído una secuencia de números terminada por una letra 'e'. Se
  conservan los caracteres pertenecientes al número leídos antes de la 'e'*/
@@ -163,6 +152,34 @@ void EXP() {
      * EXPONENCIAL*/
     RETROCEDER();
     CONSTRUIR(EXPONENTIAL);
+}
+
+/*Función que reconoce números en punto flotante. Siempre se llama después de
+ haber leído un punto o una secuencia de números terminada en punto. Se
+ conservan los caracteres pertenecientes al número leídos antes del punto.*/
+void FL() {
+    int tmp = numChar;
+    do {
+        SIGUIENTE();
+    } while (isdigit(sig));
+    /*Se llama a la función exponencial siempre que se lea una 'e' que no
+     aparezca inmediatamente después del punto*/
+    if (numChar > tmp + 1) {
+        if (sig == 'e') {
+            EXP();
+        } else {
+            /*Si la 'e' aparece justo después del punto, se devuelve un float
+             y un identificador*/
+        RETROCEDER();
+        numChar--;
+        CONSTRUIR(FLOAT);
+        }
+    } else {
+        RETROCEDER();
+        numChar--;
+        CONSTRUIR(FLOAT);
+    }
+    
 }
 
 /*Función que reconoce secuencias de números*/
@@ -209,7 +226,11 @@ void HEX() {
             SIGUIENTE();
         } while (isdigit(sig) || A_F());
         RETROCEDER();
-        CONSTRUIR(HEXADECIMAL);
+        if (strcmp(DEVOLVER_COMPONENTE(), "0x") == 0) {
+            ERROR(MALFORMED_HEXADECIMAL, LINEA());
+        } else {
+            CONSTRUIR(HEXADECIMAL);
+        }
         /*Si al cero leído le sigue otro dígito, se llama a la función de
          reconocimiento de números enteros.*/
     } else if (isdigit(sig)) {

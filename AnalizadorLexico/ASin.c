@@ -45,6 +45,6 @@ int main() {
     IMPRIMIR();
 
     CERRAR();
-    printf("\n\n\n----------Fin de la ejecución----------");
+    printf("\n\n\n----------Fin de la ejecución----------\n\n\n");
     return 0;
 }
