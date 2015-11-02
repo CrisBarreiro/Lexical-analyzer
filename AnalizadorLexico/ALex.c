@@ -151,7 +151,7 @@ void EXP() {
     /*Se retrocede una posición y se construye un componente de tipo 
      * EXPONENCIAL*/
     RETROCEDER();
-    CONSTRUIR(EXPONENTIAL);
+    CONSTRUIR(FLOAT);
 }
 
 /*Función que reconoce números en punto flotante. Siempre se llama después de
@@ -229,7 +229,7 @@ void HEX() {
         if (strcmp(DEVOLVER_COMPONENTE(), "0x") == 0) {
             ERROR(MALFORMED_HEXADECIMAL, LINEA());
         } else {
-            CONSTRUIR(HEXADECIMAL);
+            CONSTRUIR(INTEGER);
         }
         /*Si al cero leído le sigue otro dígito, se llama a la función de
          reconocimiento de números enteros.*/

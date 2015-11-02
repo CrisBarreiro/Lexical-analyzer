@@ -27,8 +27,6 @@
 #define MULTILINE_STRING 351
 #define INTEGER 352
 #define FLOAT 353
-#define HEXADECIMAL 354
-#define EXPONENTIAL 355
 #define STRING 356
 #define INDENTATION 357
 #define POWER 358

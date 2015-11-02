@@ -76,17 +76,11 @@ char* IDTOSTRING (int id){
         case 42:
             ret = "ASTERISK";
             break;
-        case HEXADECIMAL:
-            ret = "HEXADECIMAL";
-            break;
         case INTEGER:
             ret = "INTEGER";
             break;
         case FLOAT:
             ret = "FLOAT";
-            break;
-        case EXPONENTIAL:
-            ret = "EXPONENTIAL";
             break;
         case STRING:
             ret = "STRING";
