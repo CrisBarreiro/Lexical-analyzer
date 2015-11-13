@@ -16,5 +16,4 @@ typedef struct {
 /*Devuelve un componente léxico*/
 componenteLexico SIG_COMP_LEX();
 
-
 #endif /* ALEX_H_ */
