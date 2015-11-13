@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include "Defs.h"
 #include "ALex.h"
-#include "SEnt.h"
 #include "Error.h"
 #include "Tsim.h"
+#include "flex.h"
 
 #define ruta "entrada/codigo.py"
 
@@ -21,18 +21,17 @@ void PEDIR_COMP_LEX() {
         i++;
         fflush(stdout);
         printf("%d\t%-20s\t#%s#\n", i, IDTOSTRING(comp.id), comp.lexema);
-    } while (*(comp.lexema) != EOF);
+    } while (comp.id != EOF);
     printf("\n\n\n----------Fin del reconocimiento de componentes----------\n\n\n");
 }
 
 int main() {
     /*Se abre el archivo*/
-    FILE *file = ABRIR(ruta);
+    FILE *file = fopen(ruta, "r");
     if (!file) {
         ERROR(NOT_FOUND, 0);
     }
-    /*Se carga el primer buffer*/
-    INICIALIZAR();
+    yyset_in(file);
 
     /*Se inicializa la tabla de símbolos con las palabras reservadas del 
      lenguaje*/
@@ -44,7 +43,7 @@ int main() {
     /*Se imprime la tabla de símbolos*/
     IMPRIMIR();
 
-    CERRAR();
+    fclose(file);
     printf("\n\n\n----------Fin de la ejecución----------\n\n\n");
     return 0;
 }
