@@ -5,7 +5,7 @@
 /*Biblotecas o variables que se pasarán al archivo .c*/
 #include "Defs.h"
 #include "Error.h"
-int linea = 0;
+int linea = 1;
 %}
 DIGITO	[[:digit:]]
 HEX 	[[:xdigit:]]
@@ -15,25 +15,20 @@ EXP		e-?{DIGITO}+
 SYM		"("|")"|";"|","|"="|"+"|">"|"<"|"-"|"*"|"/"|"^"|"."|"{"|"}"|":"|"["|"]"
 
 %x multiline_string
-%x string1
-%x string2
 %%
-#[^\n]*$
+\"([^\"]*\n[^\"]*)*\"	ERROR(LINE_END_ON_STRING, linea);
+\'([^\']*\n[^\']*)*\'	ERROR(LINE_END_ON_STRING, linea);
+\'[^\n\']*\'	return STRING;
+\"[^\n\"]*\"	return STRING;
 \"\"\" {
 			yymore();
 			BEGIN(multiline_string);
 		}
-\"		{
-			yymore();
-			BEGIN(string2);
-		}
-\'		{
-			yymore();
-			BEGIN(string1);
-		}
+#[^\n]*$
 {DIGITO}+{EXP}	return FLOAT;
 {DIGITO}*	return INTEGER;
-"0x"{HEX}*	return INTEGER;
+"0x"{HEX}+	return INTEGER;
+"0x"		ERROR(MALFORMED_HEXADECIMAL, linea);
 {DIGITO}*"."{DIGITO}+{EXP}?	return FLOAT;
 {DIGITO}+"."{DIGITO}*{EXP}?	return FLOAT;
 {ID} return IDENTIFIER;
@@ -47,7 +42,8 @@ SYM		"("|")"|";"|","|"="|"+"|">"|"<"|"-"|"*"|"/"|"^"|"."|"{"|"}"|":"|"["|"]"
 "+="	return MORE_EQUALS;
 "=="	return EQUALS;
 <<EOF>>	return EOF;
-.
+\ +
+.		ERROR(NOT_RECOGNIZED, linea);
 
 
 <multiline_string>\"\"\"	{
@@ -60,30 +56,12 @@ SYM		"("|")"|";"|","|"="|"+"|">"|"<"|"-"|"*"|"/"|"^"|"."|"{"|"}"|":"|"["|"]"
 							++linea;
 							yymore();
 						}
-<string2>\"	{
-				BEGIN(INITIAL);
-				return STRING;
-			}
-			
-			
-<string2>.	{
-				yymore();
-			}
-
-<string2>\n	return LINE_END_ON_STRING;
-
-
-<string1>\'	{
-				BEGIN(INITIAL);
-				return STRING;
-			}
-			
-			
-<string1>.	{
-				yymore();
-			}
-
-<string1>\n	return LINE_END_ON_STRING;
-
 
 %%
+
+int getLinea() {
+
+	return linea;
+}
+
+

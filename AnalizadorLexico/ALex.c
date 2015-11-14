@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "flex.h"
 #include "Defs.h"
+#include "Error.h"
 #include "Tsim.h"
 #include "ALex.h"
 
