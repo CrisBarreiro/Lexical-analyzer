@@ -23,4 +23,16 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>flex.c</name>
+			<type>1</type>
+			<location>/home/cristina/git/analizadorlexico/AnalizadorLexico/flex.c</location>
+		</link>
+		<link>
+			<name>flex.h</name>
+			<type>1</type>
+			<location>/home/cristina/git/analizadorlexico/AnalizadorLexico/flex.h</location>
+		</link>
+	</linkedResources>
 </projectDescription>
