@@ -17,5 +17,6 @@ void ERROR(int id, int linea);
 #define NOT_RECOGNIZED 2
 #define STRING_NOT_CLOSED 3
 #define MALFORMED_HEXADECIMAL 4
+#define LINE_END_ON_STRING 5
 
 #endif /* ERROR_H_ */

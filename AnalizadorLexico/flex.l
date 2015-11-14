@@ -4,6 +4,7 @@
 %{
 /*Biblotecas o variables que se pasarán al archivo .c*/
 #include "Defs.h"
+#include "Error.h"
 int linea = 0;
 %}
 DIGITO	[[:digit:]]
@@ -11,15 +12,24 @@ HEX 	[[:xdigit:]]
 ALPHA	[[:alpha:]]
 ID		[_[:alpha:]][_[:alnum:]]*
 EXP		e-?{DIGITO}+
-SYM		"("|")"|";"|","|"="|"+"|">"|"<"|"-"|"*"|"/"|"^"|"."|"{"|"}"|":"
+SYM		"("|")"|";"|","|"="|"+"|">"|"<"|"-"|"*"|"/"|"^"|"."|"{"|"}"|":"|"["|"]"
 
 %x multiline_string
-
+%x string1
+%x string2
 %%
 #[^\n]*$
 \"\"\" {
 			yymore();
 			BEGIN(multiline_string);
+		}
+\"		{
+			yymore();
+			BEGIN(string2);
+		}
+\'		{
+			yymore();
+			BEGIN(string1);
 		}
 {DIGITO}+{EXP}	return FLOAT;
 {DIGITO}*	return INTEGER;
@@ -32,7 +42,10 @@ SYM		"("|")"|";"|","|"="|"+"|">"|"<"|"-"|"*"|"/"|"^"|"."|"{"|"}"|":"
 		return yytext[0];
 	}
 ^\ +	return INDENTATION;
-{SYM} return yytext[0];
+{SYM} 	return yytext[0];
+"**"	return POWER;
+"+="	return MORE_EQUALS;
+"=="	return EQUALS;
 <<EOF>>	return EOF;
 .
 
@@ -47,5 +60,30 @@ SYM		"("|")"|";"|","|"="|"+"|">"|"<"|"-"|"*"|"/"|"^"|"."|"{"|"}"|":"
 							++linea;
 							yymore();
 						}
+<string2>\"	{
+				BEGIN(INITIAL);
+				return STRING;
+			}
+			
+			
+<string2>.	{
+				yymore();
+			}
+
+<string2>\n	return LINE_END_ON_STRING;
+
+
+<string1>\'	{
+				BEGIN(INITIAL);
+				return STRING;
+			}
+			
+			
+<string1>.	{
+				yymore();
+			}
+
+<string1>\n	return LINE_END_ON_STRING;
+
 
 %%

@@ -23,5 +23,8 @@ void ERROR(int id, int linea) {
         case MALFORMED_HEXADECIMAL:
             printf("\nError: Hexadecimal mal formado. Línea: %d\n", linea);
             break;
+        case LINE_END_ON_STRING:
+        	printf("\nError: Salto de línea inesperado en un string. Línea: %d\n", linea);
+        	break;
     }
 }
